@@ -37,8 +37,16 @@ class LibvirtISCSIVolumeDriver(libvirt_volume.LibvirtBaseVolumeDriver):
         self.connector = connector.InitiatorConnector.factory(
             initiator.ISCSI, utils.get_root_helper(),
             use_multipath=CONF.libvirt.volume_use_multipath,
+            #True,
             device_scan_attempts=CONF.libvirt.num_volume_scan_tries,
             transport=self._get_transport())
+
+        print("qmco_func nova/virt/libvirt/volume/iscsi.py __init__() connection:{} use_multipath:{}".format(self.connector, CONF.libvirt.volume_use_multipath))
+        print("qmco_func conf readings volume_use_multipath:{} num_volume_scan_tries:{} transport:{}".format(
+            CONF.libvirt.volume_use_multipath, CONF.libvirt.num_volume_scan_tries, CONF.libvirt.iscsi_iface))
+        print("qmco_func nova.conf: {}".format(nova.conf.CONF))
+# Why is multipath not being sucked in??        
+#Apr 09 10:14:37 devstack-vm-vg509-2 nova-compute[509660]: qmco_func conf readings volume_use_multipath:False num_volume_scan_tries:5 transport:None        
 
     def _get_transport(self):
         if CONF.libvirt.iscsi_iface:
